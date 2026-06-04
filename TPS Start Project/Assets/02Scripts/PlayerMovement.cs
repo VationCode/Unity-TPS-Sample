@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController m_characterController;
     private PlayerInput m_playerInput;
+    private PlayerShooter m_playerShooter;
     private Animator m_animator;
 
     [SerializeField]
@@ -32,17 +33,14 @@ public class PlayerMovement : MonoBehaviour
         m_characterController = GetComponent<CharacterController>();
         m_playerInput = GetComponent<PlayerInput>();
         m_animator = GetComponentInChildren<Animator>();
+        m_playerShooter = GetComponent<PlayerShooter>();
         m_followCam = Camera.main;
-    }
-
-    private void Start()
-    {
-
     }
 
     private void FixedUpdate()
     {
-        if (CurrentSpeed > 0.2f || m_playerInput.fire) Rotate();
+        if (CurrentSpeed > 0.2f || m_playerInput.fire || m_playerShooter.AimState == PlayerShooter.EAimState.HipFire)
+            Rotate();
 
         Move(m_playerInput.moveInput);
         

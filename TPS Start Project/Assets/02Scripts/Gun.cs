@@ -14,7 +14,8 @@ public class Gun : MonoBehaviour
     
     private PlayerShooter _gunHolder;
     private LineRenderer _bulletLineRenderer;
-    
+
+    [SerializeField]
     private AudioSource _gunAudioPlayer;
     public AudioClip ShotClip;
     public AudioClip ReloadClip;
@@ -33,16 +34,19 @@ public class Gun : MonoBehaviour
     public int MagCapacity = 30;
 
     public float TimeBetFire = 0.12f;
-    public float ReloadTime = 1.8f;
+    public float ReloadTime = 1.2f;
     
+    // 퍼짐
     [Range(0f, 10f)] public float MaxSpread = 3f;
+    // 안정감(반동 잡는)
     [Range(1f, 10f)] public float Stability = 1f;
     [Range(0.01f, 3f)] public float RestoreFromRecoilSpeed = 2f;
     private float _currentSpread;
     private float _currentSpreadVelocity;
 
+    [SerializeField]
+    private float _rate = 0.1f;
     private float _lastFireTime;
-    public float Rate = 0.2f;
 
     private LayerMask _excludeTarget;
 
@@ -59,7 +63,7 @@ public class Gun : MonoBehaviour
     {
         this._gunHolder = p_gunHolder;
         // 총을 쏘지 않을 타겟(레이캐스트가 안되는)
-        _excludeTarget = p_gunHolder.excludeTarget;
+        _excludeTarget = p_gunHolder.ExcludeTarget;
     }
 
     private void OnEnable()
@@ -92,10 +96,13 @@ public class Gun : MonoBehaviour
             fireDir = Quaternion.AngleAxis(xError, Vector3.right) * fireDir;
 
             // 다음 반동 증가 및 정확도 내려가게
+            // Stability가 커질수록 퍼짐 줄어듬
             _currentSpread += 1f / Stability;
 
-            _lastFireTime = Time.time + Rate;
+            _lastFireTime = Time.time + _rate;
             Shot(FireTransform.position, fireDir);
+
+            return true;
         }
 
         return false;
@@ -105,8 +112,8 @@ public class Gun : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 hitPosition;
-
-        if(Physics.Raycast(p_startPoint, p_direction, out hit, FireDistance, ~_excludeTarget))
+        
+        if (Physics.Raycast(p_startPoint, p_direction, out hit, FireDistance, ~_excludeTarget))
         {
             var target = hit.collider.GetComponent<IDamageable>();
 
@@ -120,6 +127,11 @@ public class Gun : MonoBehaviour
                 damageMessage.hitNormal = hit.normal;
 
                 target.ApplyDamage(damageMessage);
+            }
+            else
+            {
+                Debug.Log("NotTarget");
+                EffectManager.Instance.PlayHitEffect(hit.point, hit.normal, hit.transform);
             }
             hitPosition = hit.point;
         }
@@ -138,7 +150,7 @@ public class Gun : MonoBehaviour
     {
         MuzzleFlashEffect.Play();
         ShellEjectEffect.Play();
-
+        
         _gunAudioPlayer.PlayOneShot(ShotClip);
 
         _bulletLineRenderer.enabled = true;
@@ -178,6 +190,8 @@ public class Gun : MonoBehaviour
         MagAmmo += ammoToFill;
         // 예비 탄약에 장전 수 만큼 제거
         AmmoRemain -= ammoToFill;
+
+        State = EState.Ready;
     }
 
     private void Update()
