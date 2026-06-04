@@ -32,7 +32,7 @@ public class EffectManager : MonoBehaviour
         {
             targetPrefab = FleshHitEffectPrefab;
         }
-        Debug.Log("Effect");
+        
         var effect = Instantiate(targetPrefab, p_pos, Quaternion.LookRotation(p_normal));
 
         if(p_parent != null)

@@ -3,6 +3,10 @@ using UnityEngine.AI;
 
 public static class Utility
 {
+    /// <summary>
+    /// 중심에 위치한 반경거리까지 areaMask에 해당하는 네브메시에서의 랜덤한 위치를 반환
+    /// </summary>
+    /// <param name="areaMask"></param>
     public static Vector3 GetRandomPointOnNavMesh(Vector3 center, float distance, int areaMask)
     {
         var randomPos = Random.insideUnitSphere * distance + center;

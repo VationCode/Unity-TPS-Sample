@@ -2,44 +2,56 @@
 
 public class PlayerHealth : LivingEntity
 {
-    private Animator animator;
-    private AudioSource playerAudioPlayer;
+    private Animator _anim;
+    private AudioSource _playerAudioPlayer;
+    private CharacterController _characterController;
 
-    public AudioClip deathClip;
-    public AudioClip hitClip;
+    public AudioClip DeathClip;
+    public AudioClip HitClip;
 
 
     private void Awake()
     {
-        playerAudioPlayer = GetComponent<AudioSource>();
-        animator = GetComponent<Animator>();
+        _playerAudioPlayer = GetComponent<AudioSource>();
+        _anim = GetComponentInChildren<Animator>();
+        _characterController = GetComponent<CharacterController>();
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
+        UpdateUI();
     }
     
     public override void RestoreHealth(float newHealth)
     {
         base.RestoreHealth(newHealth);
+        UpdateUI();
     }
 
     private void UpdateUI()
     {
-        UIManager.Instance.UpdateHealthText(dead ? 0f : health);
+        UIManager.Instance.UpdateHealthText(IsDead ? 0f : _health);
     }
     
     public override bool ApplyDamage(DamageMessage damageMessage)
     {
         if (!base.ApplyDamage(damageMessage)) return false;
+        EffectManager.Instance.PlayHitEffect(damageMessage.hitPoint,
+            damageMessage.hitNormal, transform, EffectManager.EEffectType.Flesh);
+        _playerAudioPlayer.PlayOneShot(HitClip);
 
-        
+        UpdateUI();
+
         return true;
     }
     
     public override void Die()
     {
         base.Die();
+        _playerAudioPlayer.PlayOneShot(DeathClip);
+        _anim.SetTrigger("Die");
+        
+        UpdateUI();
     }
 }
