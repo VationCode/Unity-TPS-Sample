@@ -173,7 +173,7 @@ PrefabInstance:
         type: 3}
       propertyPath: HitClip
       value: 
-      objectReference: {fileID: 8300000, guid: 48ea4e33813ff1d4683d06047258a797, type: 3}
+      objectReference: {fileID: 8300000, guid: fa6655fa844df494fb3bd2e07576e4e2, type: 3}
     - target: {fileID: 7458353093453297506, guid: 331ab676e4cbb954a8fd5256b068f82a,
         type: 3}
       propertyPath: IdleClip
@@ -181,9 +181,19 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 1a567ed8b03f9f94985c13dd742acc1f, type: 3}
     - target: {fileID: 7458353093453297506, guid: 331ab676e4cbb954a8fd5256b068f82a,
         type: 3}
+      propertyPath: ChaseClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 48ea4e33813ff1d4683d06047258a797, type: 3}
+    - target: {fileID: 7458353093453297506, guid: 331ab676e4cbb954a8fd5256b068f82a,
+        type: 3}
       propertyPath: DeathClip
       value: 
       objectReference: {fileID: 8300000, guid: a3ca581d9c46f7544babf9b09ea812aa, type: 3}
+    - target: {fileID: 7458353093453297506, guid: 331ab676e4cbb954a8fd5256b068f82a,
+        type: 3}
+      propertyPath: AttackClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 88f75e1ff2cb7da49b608ac8fba79820, type: 3}
     - target: {fileID: 9087113722299842305, guid: 331ab676e4cbb954a8fd5256b068f82a,
         type: 3}
       propertyPath: m_Name

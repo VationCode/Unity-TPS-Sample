@@ -130,7 +130,6 @@ public class Gun : MonoBehaviour
             }
             else
             {
-                Debug.Log("NotTarget");
                 EffectManager.Instance.PlayHitEffect(hit.point, hit.normal, hit.transform);
             }
             hitPosition = hit.point;
