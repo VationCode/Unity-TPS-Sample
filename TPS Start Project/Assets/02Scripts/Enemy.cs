@@ -71,6 +71,12 @@ public class Enemy : LivingEntity
 
     private float _lastSeenTime;
     private Vector3 _lastDestination;
+
+    // 경로 막힌 상황
+    [SerializeField]
+    private float _giveUpTime = 5f;
+
+    private float _partialPathStartTime;
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
@@ -222,10 +228,30 @@ public class Enemy : LivingEntity
 
         if (!CheckSight()) return;
         if (!CheckDistance()) return;
+        if (!CheckPath()) return;
 
         CheckAttackRange();
     }
+    private bool CheckPath()
+    {
+        if (_agent.pathStatus == NavMeshPathStatus.PathPartial)
+        {
+            if (_partialPathStartTime <= 0)
+                _partialPathStartTime = Time.time;
 
+            if (Time.time - _partialPathStartTime > _giveUpTime)
+            {
+                LoseTarget();
+                return false;
+            }
+        }
+        else
+        {
+            _partialPathStartTime = 0f;
+        }
+
+        return true;
+    }
     private bool CheckSight()
     {
         if (_isAggro) return true;

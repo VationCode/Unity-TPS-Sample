@@ -43,12 +43,11 @@ public class PlayerMovement : MonoBehaviour
             Rotate();
 
         Move(m_playerInput.moveInput);
-        
-        if (m_playerInput.jump) Jump();
     }
 
     private void Update()
     {
+        if (m_playerInput.jump) Jump();
         UpdateAnimation(m_playerInput.moveInput);
     }
 
