@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 8495084902536103015}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.6, z: 0.12}
+  m_LocalPosition: {x: 0, y: 1.4, z: 0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -300,6 +300,11 @@ MonoBehaviour:
   ObstacleMask:
     serializedVersion: 2
     m_Bits: 0
+  _loseTargetHeight: 3
+  _loseTargetDistance: 20
+  _loseTargetMaxDistance: 50
+  _loseSightTime: 7
+  _giveUpTime: 9
 --- !u!1001 &4597658249533158090
 PrefabInstance:
   m_ObjectHideFlags: 0
